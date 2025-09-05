@@ -5,8 +5,8 @@ Code for charging station occupancy prediction using DL variants.
 
 More detail: see the paper: 
 Ma, TY, Faye, S. (2021) Multistep Electric Vehicle Charging Station Occupancy
- Prediction using Hybrid LSTM Neural Networks. arXiv:2106.04986
-    
+Prediction using Hybrid LSTM Neural Networks. arXiv:2106.04986
+# verification on 05.09.2025
 @author: Tai-yu MA
 """
 
