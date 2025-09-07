@@ -9,6 +9,11 @@ Ma, TY, Faye, S. (2021) Multistep Electric Vehicle Charging Station Occupancy
     
 @author: Tai-yu MA
 """
+# to fix tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different 
+# numerical results due to floating-point round-off errors from different computation orders
+import os
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0" 
+
 
 import math
 import time
@@ -22,7 +27,7 @@ from keras.layers import LSTM
 from keras.layers import Dense,Dropout  
 from keras.models import Model 
 from keras.layers import Input
-from keras.layers.merge import concatenate
+from keras.layers import concatenate
 
 from sklearn import model_selection
 from sklearn.linear_model import LogisticRegression 
@@ -31,7 +36,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import f1_score, precision_score, recall_score, accuracy_score
  
- 
+
 # split a multivariate sequence into samples
 def split_sequences(sequences, n_steps_in, n_steps_out):
 	X, y = list(), list()
@@ -238,8 +243,8 @@ def run(model_id, n_steps_in,n_steps_out,n_features,n_epoch,n_trivals,n_out,
     
     t_win=n_steps_in*n_steps_out        
     n_station=9
-    string='U:/DL/data_chg_'
-    string2='U:/DL/data_chg_pred_occ_t_'
+    string='C:\\Users\\tai-yu\\Desktop\\Work\\GitDoc\\Multistep-Electric-Vehicle-Charging-Station-Occupancy-Prediction-\\mixed_LSTM\\data_chg_'
+    string2='C:\\Users\\tai-yu\\Desktop\\Work\\GitDoc\\Multistep-Electric-Vehicle-Charging-Station-Occupancy-Prediction-\\mixed_LSTM\\data_chg_pred_occ_t_'
     station=[string+'1.csv',string+'2.csv',string+'3.csv',string+'4.csv',string+'5.csv',string+'6.csv',string+'7.csv',string+'8.csv',string+'9.csv']
     station2=[string2+'1.csv',string2+'2.csv',string2+'3.csv',string2+'4.csv',string2+'5.csv',string2+'6.csv',string2+'7.csv',string2+'8.csv',string2+'9.csv']
   
@@ -280,7 +285,7 @@ def main():
    
     n_steps_in =12  # input y sequence for LSTM cell
     n_features = 1  # one feature for the input of the LSTM cell
-    n_steps_out =6# num of predicted steps. 
+    n_steps_out =1 # num of predicted steps. 
     n_epoch_global=15
     n_trivals=10
     n_out=5  

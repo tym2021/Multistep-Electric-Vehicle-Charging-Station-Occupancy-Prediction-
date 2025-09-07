@@ -9,6 +9,10 @@ Prediction using Hybrid LSTM Neural Networks. arXiv:2106.04986
 # verification on 05.09.2025
 @author: Tai-yu MA
 """
+# to fix tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different 
+# numerical results due to floating-point round-off errors from different computation orders
+import os
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0" 
 
 import math
 import time
@@ -23,13 +27,13 @@ from keras.layers import RepeatVector
 from keras.layers import Dense,Dropout,Flatten,TimeDistributed
 from keras.layers import BatchNormalization 
 from keras.layers import Bidirectional
-from keras.layers.convolutional import Conv1D
-from keras.layers.convolutional import MaxPooling1D 
+from keras.layers import Conv1D
+from keras.layers import MaxPooling1D 
 from keras.models import Model 
 from keras.layers import Input
-from keras.layers.merge import concatenate
+from keras.layers import concatenate
 
- 
+
 # split a multivariate sequence into samples
 def split_sequences(sequences, n_steps_in, n_steps_out):
 	X, y = list(), list()
@@ -352,7 +356,7 @@ def run(model_id, n_steps_in,n_steps_out,n_features,n_epoch,n_trivals,n_out,
     
     t_win=n_steps_in*n_steps_out        
     n_station=9
-    string='U:/DL/data_chg_all_feature_'   
+    string='C:\\Users\\tai-yu\\Desktop\\Work\\GitDoc\\Multistep-Electric-Vehicle-Charging-Station-Occupancy-Prediction-/DL variants/data_chg_all_feature_'   
     station=[string+'1.csv',string+'2.csv',string+'3.csv',string+'4.csv',string+'5.csv'
              ,string+'6.csv',string+'7.csv',string+'8.csv',string+'9.csv']
   
@@ -417,7 +421,7 @@ def main():
    
     n_steps_in =3  # t-3,t-2,t-1
     n_features = 148 # 148 for all features
-    n_steps_out =6# num of predicted steps, if n_steps_out =1 or 3 po_size needs to be 1
+    n_steps_out =1# num of predicted steps, if n_steps_out =1 or 3 po_size needs to be 1
     n_epoch_global=15
     n_trivals=10
     n_out=9 
@@ -432,7 +436,7 @@ def main():
     accuracy_avg_2=[]
     flag_sensitivity=0
     model_id='LSTM'
-    #model_id='GRU'
+    # model_id='GRU'
     # model_id='BiLSTM'
     #model_id='StackedLSTM'
     #model_id='Conv1D'   
@@ -468,5 +472,4 @@ def main():
     return res_all
     
 res_all = main()
- 
-    
+
